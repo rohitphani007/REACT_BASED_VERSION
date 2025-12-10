@@ -12,6 +12,8 @@ import Menu from './components/Menu';
 import Dashboard from './components/Dashboard';
 import Checkout from './components/Checkout';
 import CustomerReviews from './components/CustomerReviews';
+import About from "./components/About";
+import Contact from "./components/Contact";
 
 
 function App() {
@@ -45,6 +47,10 @@ function App() {
           <Route path="/checkout" element={<Checkout user={user} />} />
 
           <Route path="/reviews" element={<CustomerReviews />} />
+          
+          <Route path="/about" element={<About />} />
+           
+          <Route path="/contact" element={<Contact />} />
 
         </Routes>
       </div>
