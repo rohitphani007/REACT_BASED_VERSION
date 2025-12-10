@@ -1,4 +1,15 @@
-const Dashboard = ({ user }) => {
+import { useNavigate } from 'react-router-dom';
+const Dashboard = ({ user, setUser }) => {
+    const navigate = useNavigate();
+
+    const Logout = () => {
+        setUser({
+            name: 'Guest',
+            plan: 'Monthly',
+            phone: ''
+        });
+        navigate('/');
+    };
     return (
         <div className="container py-5">
             <div className="row">
@@ -10,7 +21,7 @@ const Dashboard = ({ user }) => {
                             <p className="text-muted">Plan: <span className="badge bg-accent">{user.plan}</span></p>
 
                             <div className="d-grid">
-                                <button className="btn btn-outline-danger">Logout</button>
+                                <button className="btn btn-outline-danger" onClick={Logout}>Logout</button>
                             </div>
                         </div>
                     </div>
