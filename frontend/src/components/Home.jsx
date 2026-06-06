@@ -125,7 +125,7 @@ const Home = () => {
                             />
                         ))}
                     </div>
-                    <div className="ub-hero-counter"><b>{String(currentSlide + 1).padStart(2, '0')}</b> / 03</div>
+                    <div className="ub-hero-counter"><b>{String(currentSlide + 1).padStart(2, '0')}</b> / {String(slides.length).padStart(2, '0')}</div>
                 </div>
             </section>
 
