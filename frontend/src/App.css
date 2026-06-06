@@ -681,6 +681,13 @@ footer span {
   transition: all 0.3s;
 }
 
+.ub-hero-dot:focus-visible,
+.ub-hero-arrow:focus-visible,
+.ub-slide-cta:focus-visible {
+  outline: 3px solid #d9f99d;
+  outline-offset: 3px;
+}
+
 .ub-hero-dot.on {
   width: 44px;
   background: #1d8a34;
