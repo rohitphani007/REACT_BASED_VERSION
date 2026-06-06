@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UrbanBite | Tiffin Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #17211b;
+      --muted: #647169;
+      --green: #16764b;
+      --green-dark: #0d412d;
+      --lime: #d9f99d;
+      --orange: #f97316;
+      --paper: #fffdf8;
+      --soft: #f3f8ef;
+      --line: #dce8dd;
+      --shadow: 0 24px 70px rgba(23, 33, 27, 0.18);
+      --soft-shadow: 0 14px 34px rgba(23, 33, 27, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1140px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(13, 65, 45, 0.92);
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: grid;
+      line-height: 1;
+    }
+
+    .brand strong {
+      font-size: clamp(1.45rem, 4vw, 2rem);
+      font-weight: 900;
+    }
+
+    .brand span {
+      margin-top: 5px;
+      color: #bdf4cf;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .nav-links a {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 0.94rem;
+      font-weight: 800;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-1px);
+    }
+
+    .nav-links .login-link {
+      color: #17211b;
+      background: var(--lime);
+    }
+
+    .carousel {
+      position: relative;
+      min-height: calc(100vh - 78px);
+      overflow: hidden;
+      color: #fff;
+      background: #07150f;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 850ms ease, transform 5200ms ease;
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(6, 18, 13, 0.86) 0%, rgba(6, 18, 13, 0.58) 44%, rgba(6, 18, 13, 0.12) 100%),
+        linear-gradient(180deg, transparent 70%, rgba(255, 253, 248, 0.98) 100%);
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .slide img,
+    .generated-slide {
+      width: 100%;
+      height: 100%;
+      min-height: calc(100vh - 78px);
+      object-fit: cover;
+    }
+
+    .slide img {
+      position: absolute;
+      inset: 0;
+    }
+
+    .generated-slide {
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      text-align: center;
+      background-position: center;
+      background-size: cover;
+    }
+
+    .users-slide {
+      background-image:
+        linear-gradient(110deg, rgba(8, 24, 18, 0.78), rgba(8, 24, 18, 0.3)),
+        url("https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1800&q=80");
+    }
+
+    .offers-slide {
+      background-image:
+        linear-gradient(110deg, rgba(8, 24, 18, 0.78), rgba(8, 24, 18, 0.3)),
+        url("https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=1800&q=80");
+    }
+
+    .caption {
+      position: relative;
+      z-index: 2;
+      min-height: calc(100vh - 78px);
+      display: grid;
+      align-content: center;
+      width: min(1140px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 70px 0 110px;
+    }
+
+    .caption-box {
+      max-width: 700px;
+    }
+
+    .caption h1,
+    .caption h2 {
+      margin: 0 0 16px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(3.5rem, 8vw, 7.8rem);
+      line-height: 0.9;
+      letter-spacing: 0;
+    }
+
+    .caption h2 {
+      font-size: clamp(2.8rem, 6.5vw, 6.4rem);
+    }
+
+    .caption p {
+      max-width: 640px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: clamp(1.03rem, 2vw, 1.24rem);
+      line-height: 1.7;
+    }
+
+    .carousel-controls {
+      position: absolute;
+      inset: auto 0 34px;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .arrow,
+    .indicator {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .arrow {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(8px);
+    }
+
+    .indicators {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .indicator {
+      width: 36px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.38);
+    }
+
+    .indicator.active {
+      background: var(--lime);
+    }
+
+    .register {
+      padding: clamp(58px, 8vw, 96px) 0;
+      background:
+        linear-gradient(180deg, #fffdf8, #f2f8ef),
+        var(--soft);
+    }
+
+    .register-card {
+      display: grid;
+      grid-template-columns: 0.78fr 1fr;
+      overflow: hidden;
+      border: 1px solid rgba(23, 33, 27, 0.1);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .register-intro {
+      min-height: 100%;
+      display: grid;
+      align-content: center;
+      padding: clamp(28px, 5vw, 56px);
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(13, 65, 45, 0.96), rgba(22, 118, 75, 0.86)),
+        url("https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?auto=format&fit=crop&w=1200&q=80") center / cover;
+    }
+
+    .register-intro h2 {
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.4rem, 5vw, 4.8rem);
+      line-height: 0.96;
+    }
+
+    .auth-alert {
+      display: none;
+      margin-top: 24px;
+      padding: 15px 16px;
+      border-radius: 8px;
+      color: #12452f;
+      background: #e5f8da;
+      font-weight: 800;
+    }
+
+    .form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      padding: clamp(24px, 4vw, 42px);
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 54px;
+      border: 1px solid #d8e4d9;
+      border-radius: 8px;
+      padding: 0 15px;
+      color: var(--ink);
+      background: #fbfdf9;
+      outline: 0;
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--green);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(22, 118, 75, 0.12);
+    }
+
+    .submit-area {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+      padding-top: 12px;
+    }
+
+    .btn {
+      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 34px;
+      color: #fff;
+      background: var(--green);
+      box-shadow: 0 16px 34px rgba(22, 118, 75, 0.24);
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: #128052;
+    }
+
+    .toast {
+      position: fixed;
+      top: 94px;
+      left: 50%;
+      z-index: 80;
+      width: min(560px, calc(100% - 32px));
+      display: none;
+      padding: 16px 18px;
+      border: 1px solid #ffc7bd;
+      border-radius: 8px;
+      color: #7a1f18;
+      background: #fff0ee;
+      box-shadow: var(--soft-shadow);
+      transform: translateX(-50%);
+      font-weight: 800;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(5, 14, 10, 0.68);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal.show {
+      display: grid;
+    }
+
+    .modal-card {
+      width: min(500px, 100%);
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.34);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 22px;
+      color: #fff;
+      background: var(--green);
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .close {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.17);
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 30px;
+      text-align: center;
+    }
+
+    .modal-body h4 {
+      margin: 0 0 10px;
+      font-size: 1.5rem;
+    }
+
+    .modal-body p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .modal-body .btn {
+      color: #17211b;
+      background: var(--lime);
+      box-shadow: 0 14px 28px rgba(217, 249, 157, 0.34);
+    }
+
+    .footer {
+      padding: 34px 0;
+      color: #fff;
+      background: #111815;
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 16px 0 12px;
+    }
+
+    .socials a {
+      width: 42px;
+      height: 42px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+      font-weight: 800;
+    }
+
+    @media (max-width: 820px) {
+      .nav-toggle {
+        display: grid;
+        place-items: center;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 78px;
+        left: 0;
+        right: 0;
+        display: none;
+        padding: 14px 20px 20px;
+        background: rgba(13, 65, 45, 0.98);
+      }
+
+      .nav-links.open {
+        display: grid;
+      }
+
+      .nav-links a {
+        width: 100%;
+      }
+
+      .register-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container,
+      .caption {
+        width: min(100% - 24px, 1140px);
+      }
+
+      .carousel,
+      .slide img,
+      .generated-slide,
+      .caption {
+        min-height: calc(100vh - 78px);
+      }
+
+      .caption h1,
+      .caption h2 {
+        font-size: clamp(3.1rem, 17vw, 5rem);
+      }
+
+      .form {
+        grid-template-columns: 1fr;
+      }
+
+      .submit-area .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast" id="toast">Please fill out all required fields.</div>
+
+  <header class="navbar">
+    <nav class="nav-inner container" aria-label="Primary navigation">
+      <a class="brand" href="#">
+        <strong>UrbanBite</strong>
+        <span>Tiffin Services</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a class="active" href="#">Home</a></li>
+        <li><a href="/menu">Weekly Menu</a></li>
+        <li><a href="/reviews">Reviews</a></li>
+        <li><a class="login-link" href="/login">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="carousel" aria-label="UrbanBite carousel">
+      <div class="slide active">
+        <img src="https://assets.architecturaldigest.in/photos/6008467bb3d78db39997d8f6/master/w_1600%2Cc_limit/Indian-chefs-Farzi-Cafe_Poppadum.jpg" alt="Tiffin">
+        <div class="caption">
+          <div class="caption-box">
+            <h1>Delicious Homemade Tiffins</h1>
+            <p>Fresh, healthy and delivered to your doorstep.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1800&q=80" alt="Healthy">
+        <div class="caption">
+          <div class="caption-box">
+            <h2>Healthy Choices</h2>
+            <p>Pick from our vegetarian and vegan options.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1800&q=80" alt="Tiffin Box">
+        <div class="caption">
+          <div class="caption-box">
+            <h2>Freshly Packed Tiffins</h2>
+            <p>Perfect for your busy morning schedule.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1800&q=80" alt="Healthy Food">
+        <div class="caption">
+          <div class="caption-box">
+            <h2>Balanced Meals</h2>
+            <p>Nutritious and tasty options for everyone.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="generated-slide users-slide">
+          <div class="caption-box">
+            <h2>500+ Happy Users</h2>
+            <p>Growing every day and trusted across the city.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="generated-slide offers-slide">
+          <div class="caption-box">
+            <h2>Special Offers Just for You!</h2>
+            <p>Get 10% off on monthly subscriptions, free delivery for first-time users, and combo meals at discounted prices.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-controls" aria-label="Carousel controls">
+        <button class="arrow" type="button" id="prevSlide" aria-label="Previous slide">‹</button>
+        <div class="indicators">
+          <button class="indicator active" type="button" aria-label="Slide 1"></button>
+          <button class="indicator" type="button" aria-label="Slide 2"></button>
+          <button class="indicator" type="button" aria-label="Slide 3"></button>
+          <button class="indicator" type="button" aria-label="Slide 4"></button>
+          <button class="indicator" type="button" aria-label="Slide 5"></button>
+          <button class="indicator" type="button" aria-label="Slide 6"></button>
+        </div>
+        <button class="arrow" type="button" id="nextSlide" aria-label="Next slide">›</button>
+      </div>
+    </section>
+
+    <section class="register" id="register">
+      <div class="container">
+        <div class="register-card">
+          <div class="register-intro">
+            <h2>Join UrbanBite</h2>
+            <div class="auth-alert">You're already subscribed! <a href="/dashboard">Go to Dashboard</a></div>
+          </div>
+
+          <form class="form" id="registerForm">
+            <div class="field">
+              <input id="name" name="name" type="text" placeholder="Full Name" aria-label="Full Name" autocomplete="name" required>
+            </div>
+
+            <div class="field">
+              <input id="email" name="email" type="email" placeholder="Email" aria-label="Email" autocomplete="email" required>
+            </div>
+
+            <div class="field">
+              <input id="phone" name="phone" type="tel" placeholder="Phone Number" aria-label="Phone Number" autocomplete="tel" required>
+            </div>
+
+            <div class="field">
+              <input id="password" name="password" type="password" placeholder="Create Password" aria-label="Create Password" autocomplete="new-password" required>
+            </div>
+
+            <div class="field">
+              <select id="plan" name="plan" aria-label="Select Plan" required>
+                <option value="">Select Plan</option>
+                <option value="Daily">Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly">Monthly</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <select id="foodType" name="foodType" aria-label="Food Preference">
+                <option value="">Food Preference</option>
+                <option value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+                <option value="Both">Both</option>
+              </select>
+            </div>
+
+            <div class="submit-area">
+              <button class="btn" type="submit" id="submitButton">Register Now</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 UrbanBite | Fresh Food, Fast Delivery</p>
+      <div class="socials" aria-label="Social links">
+        <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">X</a>
+        <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">Ig</a>
+        <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube">Yt</a>
+      </div>
+      <p style="margin-bottom:0;color:rgba(255,255,255,.62);">Made by: <strong style="color:#fff;">https.pixel</strong></p>
+    </div>
+  </footer>
+
+  <div class="modal" id="successModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalTitle">Welcome Aboard!</h3>
+        <button class="close" type="button" aria-label="Close modal">×</button>
+      </div>
+      <div class="modal-body">
+        <h4 id="thanksTitle">Thank you, Foodie!</h4>
+        <p id="planText">You have selected your plan. Your account has been created.</p>
+        <a class="btn" href="/dashboard">Go to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const navToggle = document.querySelector(".nav-toggle");
+    const navLinks = document.querySelector("#navLinks");
+    const slides = [...document.querySelectorAll(".slide")];
+    const indicators = [...document.querySelectorAll(".indicator")];
+    const prevSlide = document.querySelector("#prevSlide");
+    const nextSlide = document.querySelector("#nextSlide");
+    const form = document.querySelector("#registerForm");
+    const toast = document.querySelector("#toast");
+    const modal = document.querySelector("#successModal");
+    const closeModal = document.querySelector(".close");
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("active", slideIndex === currentSlide);
+      });
+      indicators.forEach((indicator, indicatorIndex) => {
+        indicator.classList.toggle("active", indicatorIndex === currentSlide);
+      });
+    }
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener("click", () => showSlide(index));
+    });
+
+    prevSlide.addEventListener("click", () => showSlide(currentSlide - 1));
+    nextSlide.addEventListener("click", () => showSlide(currentSlide + 1));
+
+    setInterval(() => showSlide(currentSlide + 1), 3600);
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const requiredFields = ["name", "email", "phone", "password", "plan"];
+      const missing = requiredFields.some((field) => !String(data.get(field) || "").trim());
+
+      if (missing) {
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2600);
+        return;
+      }
+
+      document.querySelector("#thanksTitle").textContent = `Thank you, ${data.get("name")}!`;
+      document.querySelector("#planText").textContent = `You have selected the ${data.get("plan")} plan. Your account has been created.`;
+      modal.classList.add("show");
+    });
+
+    closeModal.addEventListener("click", () => modal.classList.remove("show"));
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) modal.classList.remove("show");
+    });
+  </script>
+</body>
+</html>

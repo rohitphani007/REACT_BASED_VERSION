@@ -51,7 +51,7 @@ const CustomerReviews = () => {
 
   return (
     <div className="container py-5 min-vh-100 d-flex flex-column align-items-center">
-      <div className="glass-card p-5 w-100" style={{ maxWidth: '600px' }}>
+      <div className="glass-card review-card p-5 w-100" style={{ maxWidth: '600px' }}>
         <h2 className="fw-bold mb-4">Customer Reviews</h2>
 
         <form onSubmit={handleSubmit} className="d-flex flex-column gap-4">
